@@ -43,7 +43,7 @@ NOTE: it is ok to echo output to the screen as you wish
 
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
-
+        System.out.println(Verifier.checkInt("123123"));
         input.close();
 
     }
