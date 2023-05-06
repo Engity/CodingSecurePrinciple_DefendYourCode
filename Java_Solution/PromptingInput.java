@@ -53,54 +53,54 @@ public class PromptingInput {
         PromptingInput test = new PromptingInput();
         test.promptUser(
                 "Please input your first name " +
-                        "(only alphabetic characters " +
-                        "with the maximum length of 50 are allowed): ",
+                "(only alphabetic characters " +
+                "with the maximum length of 50 are allowed): ",
                 "First name is invalid, please only enter " +
-                        "alphabetic characters with the maximum length of 50."
-                        + "\nPlease try again.", "", 1);
+                "alphabetic characters with the maximum length of 50."
+                + "\nPlease try again.", "", 1);
         String firstName = test.myStoredName;
         test.promptUser(
                 "Please input your last name " +
-                        "(only alphabetic characters " +
-                        "with the maximum length of 50 are allowed): ",
+                "(only alphabetic characters " +
+                "with the maximum length of 50 are allowed): ",
                 "Last name is invalid, please only enter " +
-                        "alphabetic characters with the maximum length of 50."
-                        + "\nPlease try again.", "", 1);
+                "alphabetic characters with the maximum length of 50."
+                + "\nPlease try again.", "", 1);
         String lastName = test.myStoredName;
         test.promptUser(
                 "Please input your first integer " +
-                        "(integer value must not greater then 2,147,483,647 " +
-                        "and lower then -2,147,483,648): ",
+                "(integer value must not greater then 2,147,483,647 " +
+                "and lower then -2,147,483,648): ",
                 "Input is invalid, please enter an integer " +
-                        "that is not then greater then 2,147,483,647 " +
-                        "and lower then -2,147,483,648"
-                        + "\nPlease try again.", "", 2);
+                "that is not then greater then 2,147,483,647 " +
+                "and lower then -2,147,483,648"
+                + "\nPlease try again.", "", 2);
         long firstInteger = test.myStoredInteger;
         test.promptUser(
                 "Please input your second integer " +
-                        "(integer value must not greater then 2,147,483,647 " +
-                        "and lower then -2,147,483,648): ",
+                "(integer value must not greater then 2,147,483,647 " +
+                "and lower then -2,147,483,648): ",
                 "Input is invalid, please enter an integer " +
-                        "that is not then greater then 2,147,483,647 " +
-                        "and lower then -2,147,483,648"
-                        + "\nPlease try again.", "", 2);
+                "that is not then greater then 2,147,483,647 " +
+                "and lower then -2,147,483,648"
+                + "\nPlease try again.", "", 2);
         long secondInteger = test.myStoredInteger;
         test.promptUser(
                 "Please input your input file's name " +
-                        "(special characters allowed except _ and -, " +
-                        "number and alphabetic characters allowed; " +
-                        "Has to end with .txt): ",
+                "(special characters allowed except _ and -, " +
+                "number and alphabetic characters allowed; " +
+                "Has to end with .txt): ",
                 "Input file's name is invalid, please re-enter, " +
-                        "alphabetic characters, numbers " +
-                        "and special characters allowed except _ and -" +
-                        "\n(File name has to end with .txt)"
-                        + "\nPlease try again.", "", 3);
+                "alphabetic characters, numbers " +
+                "and special characters allowed except _ and -" +
+                "\n(File name has to end with .txt)"
+                + "\nPlease try again.", "", 3);
         String inputFile = test.myStoredFileName;
         test.promptUser(
                 "Please input your output file's name " +
-                        "(special characters allowed except _ and -, " +
-                        "number and alphabetic characters allowed; " +
-                        "Has to end with .txt): ",
+                "(special characters allowed except _ and -, " +
+                "number and alphabetic characters allowed; " +
+                "Has to end with .txt): ",
                 "Output file's name is invalid, please re-enter, " +
                         "alphabetic characters, numbers " +
                         "and special characters allowed except _ and -" +
@@ -109,19 +109,19 @@ public class PromptingInput {
         String outputFile = test.myStoredFileName;
         test.promptUser(
                 "Password has to be at least 8 to 30 in length." +
-                        "\nIt must contain at least a number, a capital letter," +
-                        " and a non-capital letter." +
-                        "\nIt must contain at least one of these punctuation marks" +
-                        "\n!@#$%^&()_+\\-={}:;\"|,.<>/?" +
-                        "\nNo three consecutive lower-case characters" +
-                        "\nPlease input your password:\s",
+                "\nIt must contain at least a number, a capital letter," +
+                " and a non-capital letter." +
+                "\nIt must contain at least one of these punctuation marks" +
+                "\n!@#$%^&()_+\\-={}:;\"|,.<>/?" +
+                "\nNo three consecutive lower-case characters" +
+                "\nPlease input your password:\s",
                 "Password has to be at least 8 to 30 in length." +
-                        "\nIt must contain at least a number, a capital letter," +
-                        " and a non-capital letter." +
-                        "\nIt must contain at least one of these punctuation marks" +
-                        "\n!@#$%^&()_+\\-={}:;\"|,.<>/?" +
-                        "\nNo three consecutive lower-case characters" +
-                        "\nPlease input your password:\s",
+                "\nIt must contain at least a number, a capital letter," +
+                " and a non-capital letter." +
+                "\nIt must contain at least one of these punctuation marks" +
+                "\n!@#$%^&()_+\\-={}:;\"|,.<>/?" +
+                "\nNo three consecutive lower-case characters" +
+                "\nPlease input your password:\s",
                 "Please re-enter your password for confirmation: ", 4);
         test.writeOutputFile(firstName, lastName, firstInteger,
                 secondInteger, inputFile, outputFile);
@@ -323,18 +323,19 @@ public class PromptingInput {
                                  String inputFile, String outputFile) {
         try (FileOutputStream file = new FileOutputStream(outputFile);
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(file))) {
-            String result =
+            String result = //Formatting result for inputs
                     "First name: " + firstName +
-                            "\nLast Name: " + lastName +
-                            "\n\nInteger a: " + firstInteger +
-                            "\nInteger b: " + secondInteger +
-                            "\na + b: " + (firstInteger + secondInteger) +
-                            "\na * b: " + (firstInteger * secondInteger) +
-                            "\n\nInput file's name: " + inputFile +
-                            "\nContents in the file: ";
+                    "\nLast Name: " + lastName +
+                    "\nInteger a: " + firstInteger +
+                    "\nInteger b: " + secondInteger +
+                    "\na + b: " + (firstInteger + secondInteger) +
+                    "\na * b: " + (firstInteger * secondInteger) +
+                    "\n\nInput file's name: " + inputFile +
+                    "\nContents in the file: ";
             writer.write(result);
             writer.newLine();
 
+            //Copy contents form the input file to output file
             String line;
             BufferedReader reader = new BufferedReader(
                     new FileReader(inputFile));
@@ -358,14 +359,14 @@ public class PromptingInput {
     private String getPasswordStoringFileName() {
         promptUser(
                 "Please input your file's name to store your password" +
-                        "(special characters allowed except _ and -, " +
-                        "number and alphabetic characters allowed; " +
-                        "Has to end with .txt): ",
+                "(special characters allowed except _ and -, " +
+                "number and alphabetic characters allowed; " +
+                "Has to end with .txt): ",
                 "File's name is invalid, please re-enter, " +
-                        "alphabetic characters, numbers " +
-                        "and special characters allowed except _ and -" +
-                        "\n(File name has to end with .txt)"
-                        + "\nPlease try again.", "", 3);
+                "alphabetic characters, numbers " +
+                "and special characters allowed except _ and -" +
+                "\n(File name has to end with .txt)"
+                + "\nPlease try again.", "", 3);
         return myStoredFileName;
     }
 
