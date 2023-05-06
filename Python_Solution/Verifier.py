@@ -1,6 +1,5 @@
 import re
 
-
 class Verifier:
     @staticmethod
     def verifyInt(entry):
@@ -44,7 +43,10 @@ class Verifier:
     def verifyPassword(entry):
         # Password Condition:
         x = re.search(
-            "^[^~)('!*<>:;,?\"*|/]+\.txt$", entry
+            "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])"
+            + "(?=.*[!@#$%^&()_+\-={}:;\"\|,.<>\/?])"
+            + "(^[A-Za-z0-9!@#$%^&()_+\-={}:;\"\|,.<>\/?]*.{8,30}$)"
+            , entry
         )  # Regex to check file name, allow number and character and only file with txt extension
         if x == None:
             return False
