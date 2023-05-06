@@ -48,7 +48,16 @@ public class Verifier{
      * @return true if s is a valid password, false if it is not
      */
     public boolean checkPassword(String s) {
-        myPattern = Pattern.compile("^[A-Za-z0-9!@#$%^&()_+\\-={}:;\"\\\\|,.<>/?]*.{8,30}$");
+        myPattern = Pattern.compile("^(?!.*[a-z]{4,})" +
+                        //Negative look ahead for no more than 3 consecutive
+                        //lower-case characters.
+                        "(?=.*[A-Z])" +
+                        //Positive look ahead for at least 1 upper-case character.
+                        "(?=.*[a-z])" + //At least 1 lower-case.
+                        "(?=.*\\d)" + //At least 1 digit.
+                        "(?=.*[!@#$%^&()_+\\-={}:;\"\\\\|,.<>/?])" +
+                        //At least 1 punctuation mark.
+                        ".{8,30}$"); //At least 10 characters long and at most 30.
         myMatcher = myPattern.matcher(s);
         return myMatcher.find();
     }
