@@ -15,36 +15,11 @@ public class PromptingInput {
     private String myStoredFileName;
     private byte[] mySalt;
 
-    /**
-     * 
-1. prompts for and reads the user's first name, then last name -- each should be at most 50 characters -- decide what is legitimate for characters for first and last name
-You must make it clear to the user what is expected for myInput (describe range, acceptable characters, and anything else you feel is important)
-
-2. prompts for and reads in two int values from the user (range of values are those of a 4 byte int)
-Once again, make clear to user what is expected. Note that an int can be from -2,147,...,... to 2,147,...,...
-
-3. prompts for reads the name of an myInput file from the user
-Make clear to user what is expected and will be accepted
-
-4. prompts for reads the name of an output file from the user
-Same here
-
-5. prompts the user to enter a password, store the password, then ask the user to re-enter the password and verify that it is correct
-password should be hashed using a mySalt and written to a file
-to validate, grab hash from file and compare it to hash from second user entry for password
-as long as passwords don't match/follow your password specifications, re-prompt the user
-6. opens the output file and
-writes the user's name
-writes the result of adding the two integer values (no overflow should occur)
-writes the result of multiplying the two integer values (no overflow should occur),
-writes the contents of the myInput file
-Each thing written should be clearly labeled (e.g. First name, Last name, First Integer, Second Integer, Sum, Product, Input File Name, Input file contents)
-NOTE: it is ok to echo output to the screen as you wish
-     */
     PromptingInput() {
         myInput = new Scanner(System.in);
     }
-    void promptUser(String displayPrompt, String reEntryPrompt, String confirmationPrompt, int choice, boolean confirmation) {
+
+    void promptUser(String displayPrompt, String reEntryPrompt, String confirmationPrompt, int choice) {
         String s;
         boolean result = false;
         boolean retries = false;
@@ -76,22 +51,6 @@ NOTE: it is ok to echo output to the screen as you wish
                 }
 
                 case 3 -> {
-                    result = myVerifier.checkPassword(s);
-                    if (result) {
-                        myPassword = securePassword(s);
-                        storePassword(myPassword);
-                        while (true) {
-                            System.out.println("Re-enter your password for confirmation:");
-                            String re = myInput.nextLine();
-                            if (validatePassword(re)) {
-                                break;
-                            }
-                        }
-                    } else {
-                        retries = true;
-                    }
-                }
-                case 4 -> {
                     result = myVerifier.checkFileName(s);
                     if (result) {
                         myStoredFileName = s;
@@ -99,11 +58,30 @@ NOTE: it is ok to echo output to the screen as you wish
                         retries = true;
                     }
                 }
+
+                case 4 -> {
+                    result = myVerifier.checkPassword(s);
+                    if (result) {
+                        myPassword = securePassword(s);
+                        storePassword(myPassword);
+                        while (true) {
+                            System.out.println(confirmationPrompt);
+                            String re = myInput.nextLine();
+                            if (validatePassword(re)) {
+                                break;
+                            } else {
+                                System.out.println("Wrong password,try again");
+                            }
+                        }
+                    } else {
+                        retries = true;
+                    }
+                }
             }
         } while (!result);
     }
-    public void storePassword(String encryptedPassword){
 
+    public void storePassword(String encryptedPassword){
         try (FileOutputStream file = new FileOutputStream("password.txt");
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(file))) {
             writer.write(Base64.getEncoder().encodeToString(mySalt)
@@ -112,6 +90,7 @@ NOTE: it is ok to echo output to the screen as you wish
             System.out.println("There is an error storing password process");
         }
     }
+
     public boolean validatePassword(String encryptedPassword){
         String readSalt;
         String readHash;
@@ -159,10 +138,80 @@ NOTE: it is ok to echo output to the screen as you wish
         }
     }
 
+    public static void writeOutputFile(String firstName, String lastName, long firstInteger, long secondInteger, String inputFile, String outputFile) {
+        try (FileOutputStream file = new FileOutputStream(outputFile);
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(file))) {
+            writer.write(firstName);
+            writer.newLine();
+            writer.write(lastName);
+            writer.newLine();
+            writer.write(Long.toString(firstInteger));
+            writer.newLine();
+            writer.write(Long.toString(secondInteger));
+            writer.newLine();
+            writer.write(Long.toString(firstInteger + secondInteger));
+            writer.newLine();
+            writer.write(Long.toString(firstInteger * secondInteger));
+            writer.newLine();
+            writer.write(inputFile);
+            writer.newLine();
+
+            String line;
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            while ((line = reader.readLine()) != null) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            System.out.println("There is an error storing everything input to file");
+        }
+    }
+
     public static void main(String[] args) {
         PromptingInput test = new PromptingInput();
-        test.promptUser("Enter your name: ", "Please re-enter: ","",3,false);
-        String name = test.myPassword;
-        System.out.println(name+"\s");
+        test.promptUser("Please input your first name (only alphabetic characters with the maximum length of 50 are allowed): ",
+        "First name is invalid, please only enter alphabetic characters with the maximum length of 50."
+                + "\nPlease try again.","", 1);
+        String firstName = test.myStoredName;
+        test.promptUser("Please input your last name (only alphabetic characters with the maximum length of 50 are allowed): ",
+                "Last name is invalid, please only enter alphabetic characters with the maximum length of 50."
+                        + "\nPlease try again.","", 1);
+        String lastName = test.myStoredName;
+        test.promptUser("Please input your first integer (integer value must not greater then 2,147,483,647 and lower then -2,147,483,648): ",
+                "Input is invalid, please enter an integer that is not then greater then 2,147,483,647 and lower then -2,147,483,648"
+                        + "\nPlease try again.","", 2);
+        long firstInteger = test.myStoredInteger;
+        test.promptUser("Please input your second integer (integer value must not greater then 2,147,483,647 and lower then -2,147,483,648): ",
+                "Input is invalid, please enter an integer that is not then greater then 2,147,483,647 and lower then -2,147,483,648"
+                        + "\nPlease try again.","", 2);
+        long secondInteger = test.myStoredInteger;
+        test.promptUser("Please input your input file's name (special characters allowed except _ and -, number and alphabetic characters allowed; Has to end with .txt): ",
+                "Input file's name is invalid, please re-enter, alphabetic characters, numbers and special characters allowed except _ and -"
+                        + "\nPlease try again.","", 3);
+        String inputFile = test.myStoredFileName;
+        test.promptUser("Please input your output file's name (special characters allowed except _ and -, number and alphabetic characters allowed; Has to end with .txt): ",
+                "Output file's name is invalid, please re-enter, alphabetic characters, numbers and special characters allowed except _ and -"
+                        + "\nPlease try again.","", 3);
+        String outputFile = test.myStoredFileName;
+        test.promptUser(
+                """
+
+                        Please input a password.Password has to be at least 8 to 30 in length.
+                        It must contain at least a number, Capital letter, non-capital letter.
+                        It must contain at least one of these punctuation marks, !@#$%^&()_+\\-={}:;"|,.<>/?
+                        No three consecutive lower-case characters
+
+                        Please input your password:\s""",
+                """
+
+                        Please input a password.Password has to be at least 8 to 30 in length.
+                        It must contain at least a number, Capital letter, non-capital letter.
+                        It must contain at least one of these punctuation marks, !@#$%^&()_+\\-={}:;"|,.<>/?
+                        No three consecutive lower-case characters
+
+                        Please input your password:\s""",
+                "Please re-enter your password for confirmation: ",
+                4);
+        writeOutputFile(firstName, lastName, firstInteger, secondInteger, inputFile, outputFile);
     }
 }
