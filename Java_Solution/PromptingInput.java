@@ -44,7 +44,7 @@ NOTE: it is ok to echo output to the screen as you wish
     PromptingInput() throws NoSuchAlgorithmException {
         input = new Scanner(System.in);
     }
-    void promptUser(String displayPrompt, String reEntryPrompt, String confirmationPrompt, int choice, boolean confirmation) throws NoSuchAlgorithmException, IOException {
+    void promptUser(String displayPrompt, String reEntryPrompt, String confirmationPrompt, int choice, boolean confirmation) throws  IOException {
         String s;
         boolean result = false;
         boolean retries = false;
@@ -105,54 +105,64 @@ NOTE: it is ok to echo output to the screen as you wish
     public void storePassword(String encryptedPassword) throws IOException {
         FileOutputStream file = null;
         BufferedWriter writer = null;
+
         try {
             file = new FileOutputStream("password.txt");
             writer = new BufferedWriter(new OutputStreamWriter(file));
             writer.write(Base64.getEncoder().encodeToString(salt) + "\n" + encryptedPassword + "\n");
         } catch (Exception e) {
-            ///
+            System.out.println("There is an error storing password process");
         } finally {
             if (writer != null) writer.close();
             if (file != null) file.close();
         }
     }
-    public boolean validatePassword(String encryptedPassword) throws IOException, NoSuchAlgorithmException {
+    public boolean validatePassword(String encryptedPassword) throws IOException {
         String readSalt = null;
         String readHash = null;
         try (BufferedReader reader = new BufferedReader(new FileReader("password.txt"))) {
             readSalt = reader.readLine();
             readHash = reader.readLine();
-        } catch (Exception e) {
-           ///
-        }
 
-        if (readSalt != null && readHash != null) {
-            byte[] decodedSalt = Base64.getDecoder().decode(readSalt);
-            String hashedPassword = securePassword(encryptedPassword);
-            return readSalt.equals(Base64.getEncoder().encodeToString(salt)) && hashedPassword.equals(readHash);
-        } else {
-            throw new IOException("Error: file is not in correct format.");
+            if (readSalt != null && readHash != null) {
+                String hashedPassword = securePassword(encryptedPassword);
+                return readSalt.equals(Base64.getEncoder().encodeToString(salt)) && hashedPassword.equals(readHash);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error: file is not in correct format.");
+            return false;
         }
+        return false;
     }
 
-    public String securePassword(String password) throws NoSuchAlgorithmException {
+    public String securePassword(String password) {
         if (salt == null) {
             generateSalt();
         }
 
-        MessageDigest md = MessageDigest.getInstance("SHA-512");
-        md.update(salt);
-        byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(hashedPassword);
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt);
+            byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(hashedPassword);
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("There is an error securing password process");
+            return "";
+        }
     }
 
-    public void generateSalt() throws NoSuchAlgorithmException {
-        SecureRandom random = SecureRandom.getInstanceStrong();
-        salt = new byte[10];
-        random.nextBytes(salt);
+    public void generateSalt() {
+        try {
+            SecureRandom random = SecureRandom.getInstanceStrong();
+            salt = new byte[10];
+            random.nextBytes(salt);
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("There is an error generating salt process");
+        }
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         PromptingInput test = new PromptingInput();
         test.promptUser("Enter your name: ", "Please re-enter: ","",3,false);
         String name = test.myPassword;
