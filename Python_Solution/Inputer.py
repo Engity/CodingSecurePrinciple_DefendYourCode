@@ -158,7 +158,7 @@ class Inputer:
                                 continue     
                         else:
                             print("Error getting the password")
-                            return False
+                            break
                     if (passConfirmed):
                         break
                 else:
