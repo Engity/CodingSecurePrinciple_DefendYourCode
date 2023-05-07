@@ -102,10 +102,10 @@ public class PromptingInput {
                 "number and alphabetic characters allowed; " +
                 "Has to end with .txt): ",
                 "Output file's name is invalid, please re-enter, " +
-                        "alphabetic characters, numbers " +
-                        "and special characters allowed except _ and -" +
-                        "\n(File name has to end with .txt)"
-                        + "\nPlease try again:", "", 3);
+                "alphabetic characters, numbers " +
+                "and special characters allowed except _ and -" +
+                "\n(File name has to end with .txt)"
+                + "\nPlease try again:", "", 3);
         String outputFile = test.myStoredFileName;
         test.promptUser(
                 "Password has to be at least 8 to 30 in length." +
@@ -358,7 +358,7 @@ public class PromptingInput {
      */
     private String getPasswordStoringFileName() {
         promptUser(
-                "Please input your file's name to store your password" +
+                "Please input your file's name to store your password " +
                 "(special characters allowed except _ and -, " +
                 "number and alphabetic characters allowed; " +
                 "Has to end with .txt): ",
