@@ -6,11 +6,21 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Scanner;
 
+/**
+ * This class centralizes the behavior for reading, validating,
+ * storing, and writing-out inputs from user's input
+ *
+ * The class also includes salt and hashing algorithm to protect
+ * password from user's input and also keep track a log file if
+ * any error occurs
+ *
+ * @version 5 May 2023
+ */
 public class PromptingInput {
     /**
      * The verifier to verifier user's inputs
      */
-    private final Verifier myVerifier = new Verifier();
+    private final Verifier VERIFIER = new Verifier();
     /**
      * The scanner to scan user's inputs
      */
@@ -18,23 +28,19 @@ public class PromptingInput {
     /**
      * The string builder to keep track of error messages
      */
-    private final StringBuilder log = new StringBuilder();
+    final StringBuilder myLog = new StringBuilder();
     /**
      * The string to store name retrieved from user's input
      */
-    private String myStoredName;
+    String myStoredName;
     /**
      * The integer to store integer value retrieved from user's input
      */
-    private int myStoredInteger;
-    /**
-     * The string to store password retrieved from user's input
-     */
-    private String myPassword;
+    int myStoredInteger;
     /**
      * The string to store file's name retrieved from user's input
      */
-    private String myStoredFileName;
+    String myStoredFileName;
     /**
      * The byte array contains byte value for salt
      */
@@ -49,96 +55,17 @@ public class PromptingInput {
         myInput = new Scanner(System.in);
     }
 
-    public static void main(String[] args) {
-        PromptingInput test = new PromptingInput();
-        test.promptUser(
-                "Please input your first name " +
-                "(only alphabetic characters " +
-                "with the maximum length of 50 are allowed): ",
-                "First name is invalid, please only enter " +
-                "alphabetic characters with the maximum length of 50."
-                + "\nPlease try again.", "", 1);
-        String firstName = test.myStoredName;
-        test.promptUser(
-                "Please input your last name " +
-                "(only alphabetic characters " +
-                "with the maximum length of 50 are allowed): ",
-                "Last name is invalid, please only enter " +
-                "alphabetic characters with the maximum length of 50."
-                + "\nPlease try again.", "", 1);
-        String lastName = test.myStoredName;
-        test.promptUser(
-                "Please input your first integer " +
-                "(integer value must not greater then 2,147,483,647 " +
-                "and lower then -2,147,483,648): ",
-                "Input is invalid, please enter an integer " +
-                "that is not then greater then 2,147,483,647 " +
-                "and lower then -2,147,483,648"
-                + "\nPlease try again.", "", 2);
-        long firstInteger = test.myStoredInteger;
-        test.promptUser(
-                "Please input your second integer " +
-                "(integer value must not greater then 2,147,483,647 " +
-                "and lower then -2,147,483,648): ",
-                "Input is invalid, please enter an integer " +
-                "that is not then greater then 2,147,483,647 " +
-                "and lower then -2,147,483,648"
-                + "\nPlease try again.", "", 2);
-        long secondInteger = test.myStoredInteger;
-        test.promptUser(
-                "Please input your input file's name " +
-                "(special characters allowed except _ and -, " +
-                "number and alphabetic characters allowed; " +
-                "Has to end with .txt): ",
-                "Input file's name is invalid, please re-enter, " +
-                "alphabetic characters, numbers " +
-                "and special characters allowed except _ and -" +
-                "\n(File name has to end with .txt)"
-                + "\nPlease try again.", "", 3);
-        String inputFile = test.myStoredFileName;
-        test.promptUser(
-                "Please input your output file's name " +
-                "(special characters allowed except _ and -, " +
-                "number and alphabetic characters allowed; " +
-                "Has to end with .txt): ",
-                "Output file's name is invalid, please re-enter, " +
-                        "alphabetic characters, numbers " +
-                        "and special characters allowed except _ and -" +
-                        "\n(File name has to end with .txt)"
-                        + "\nPlease try again:", "", 3);
-        String outputFile = test.myStoredFileName;
-        test.promptUser(
-                "Password has to be at least 8 to 30 in length." +
-                "\nIt must contain at least a number, a capital letter," +
-                " and a non-capital letter." +
-                "\nIt must contain at least one of these punctuation marks" +
-                "\n!@#$%^&()_+\\-={}:;\"|,.<>/?" +
-                "\nNo three consecutive lower-case characters" +
-                "\nPlease input your password:\s",
-                "Password has to be at least 8 to 30 in length." +
-                "\nIt must contain at least a number, a capital letter," +
-                " and a non-capital letter." +
-                "\nIt must contain at least one of these punctuation marks" +
-                "\n!@#$%^&()_+\\-={}:;\"|,.<>/?" +
-                "\nNo three consecutive lower-case characters" +
-                "\nPlease input your password:\s",
-                "Please re-enter your password for confirmation: ", 4);
-        test.writeOutputFile(firstName, lastName, firstInteger,
-                secondInteger, inputFile, outputFile);
-        test.generateErrorLogFile(test.log);
-    }
-
     /**
      * Performs validation and storing user input
      * on specific prompts' description
      *
-     * @param displayPrompt      The prompt description
-     * @param reEntryPrompt      The prompt description when input is invalid
-     * @param confirmationPrompt The prompt description for password
-     * @param choice             The integer choice represent specific prompt
+     * @param theDisplayPrompt      The prompt description
+     * @param theReEntryPrompt      The prompt description when input is invalid
+     * @param theConfirmationPrompt The prompt description for password
+     * @param theChoice             The integer choice represent specific prompt
      */
-    private void promptUser(String displayPrompt, String reEntryPrompt,
-                            String confirmationPrompt, int choice) {
+     void promptUser(String theDisplayPrompt, String theReEntryPrompt,
+                            String theConfirmationPrompt, int theChoice) {
         String userInput;
         boolean result = false;
         boolean retries = false;
@@ -146,16 +73,16 @@ public class PromptingInput {
             //Keep prompting until get a valid result
             //Retries will have different prompt message
             if (retries) {
-                System.out.println(reEntryPrompt);
+                System.out.println(theReEntryPrompt);
             } else {
-                System.out.println(displayPrompt);
+                System.out.println(theDisplayPrompt);
             }
             userInput = myInput.nextLine();
 
-            switch (choice) {
+            switch (theChoice) {
                 case 1 -> {
                     //Validates name and store it if valid
-                    result = myVerifier.checkName(userInput);
+                    result = VERIFIER.checkName(userInput);
                     if (result) {
                         myStoredName = userInput;
                     } else {
@@ -165,8 +92,8 @@ public class PromptingInput {
 
                 case 2 -> {
                     //Validates integer and store it if valid
-                    if (myVerifier.checkInt(userInput) != null) {
-                        myStoredInteger = myVerifier.checkInt(userInput);
+                    if (VERIFIER.checkInt(userInput) != null) {
+                        myStoredInteger = VERIFIER.checkInt(userInput);
                         result = true;
                     } else {
                         retries = true;
@@ -175,7 +102,7 @@ public class PromptingInput {
 
                 case 3 -> {
                     //Validates file's name and store it if valid
-                    result = myVerifier.checkFileName(userInput);
+                    result = VERIFIER.checkFileName(userInput);
                     if (result) {
                         myStoredFileName = userInput;
                     } else {
@@ -189,15 +116,15 @@ public class PromptingInput {
                     //Validate the password again with encrypted password
                     //Keep prompting if the re-entry password did not match
                     //If file not found, exist the loop
-                    result = myVerifier.checkPassword(userInput);
+                    result = VERIFIER.checkPassword(userInput);
                     if (result) {
-                        String file = getPasswordStoringFileName();
-                        myPassword = securePassword(userInput);
-                        storePassword(myPassword, file);
+                        String fileName = getPasswordStoringFileName();
+                        String typedPassword = securePassword(userInput);
+                        storePassword(typedPassword, fileName);
                         while (fileFound) {
-                            System.out.println(confirmationPrompt);
-                            String re = myInput.nextLine();
-                            if (validatePassword(re, file)) {
+                            System.out.println(theConfirmationPrompt);
+                            String reTypedPassword = myInput.nextLine();
+                            if (validatePassword(reTypedPassword, fileName)) {
                                 break;
                             } else if (fileFound) {
                                 //Display only in the case file is found
@@ -216,19 +143,20 @@ public class PromptingInput {
      * Stores encrypted password in the given file's name
      * entered by the user
      *
-     * @param encryptedPassword The string encrypted password
-     * @param fileName          The string file's name
+     * @param theEncryptedPassword The string encrypted password
+     * @param theFileName          The string file's name
      */
-    private void storePassword(String encryptedPassword, String fileName) {
-        try (FileOutputStream file = new FileOutputStream(fileName);
+    private void storePassword(String theEncryptedPassword,
+                               String theFileName) {
+        try (FileOutputStream file = new FileOutputStream(theFileName);
              BufferedWriter writer = new BufferedWriter(
                      new OutputStreamWriter(file))) {
             //The file will contain encrypted salt code and encrypted password
             writer.write(Base64.getEncoder().encodeToString(mySalt)
-                    + "\n" + encryptedPassword + "\n");
+                    + "\n" + theEncryptedPassword + "\n");
         } catch (Exception e) {
             System.out.println("There is an error storing password process");
-            log.append(e.getMessage());
+            myLog.append(e.getMessage());
         }
     }
 
@@ -236,22 +164,22 @@ public class PromptingInput {
      * Validates password to see if it matches
      * the encrypted password stored in a file
      *
-     * @param password The string password entered by the user
-     * @param fileName The string file's name entered by the user
+     * @param thePassword The string password entered by the user
+     * @param theFileName The string file's name entered by the user
      * @return The boolean true or false if it matched
      */
-    private boolean validatePassword(String password, String fileName) {
+    private boolean validatePassword(String thePassword, String theFileName) {
         String readSalt;
         String readHash;
         try (BufferedReader reader = new BufferedReader(new FileReader(
-                fileName))) {
+                theFileName))) {
             readSalt = reader.readLine(); //The encrypted salt code
             readHash = reader.readLine(); //The encrypted password hash code
 
             //Encrypt the password to compare
             // with the previous password (encrypted)
             if (readSalt != null && readHash != null) {
-                String hashedPassword = securePassword(password);
+                String hashedPassword = securePassword(thePassword);
                 return readSalt.equals(Base64.getEncoder()
                         .encodeToString(mySalt))
                         && hashedPassword.equals(readHash);
@@ -261,7 +189,7 @@ public class PromptingInput {
             System.out.println(
                     "There is an error validating password process");
             fileFound = false; //File not found
-            log.append(e.getMessage());
+            myLog.append(e.getMessage());
             return false;
         }
         return false;
@@ -270,10 +198,10 @@ public class PromptingInput {
     /**
      * Adding salt and perform hash on password
      *
-     * @param password The password entered by the user
+     * @param thePassword The password entered by the user
      * @return The string encrypted password
      */
-    private String securePassword(String password) {
+    private String securePassword(String thePassword) {
         if (mySalt == null) {
             generateSalt();
         }
@@ -284,11 +212,11 @@ public class PromptingInput {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             md.update(mySalt);
             byte[] hashedPassword = md.digest(
-                    password.getBytes(StandardCharsets.UTF_8));
+                    thePassword.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hashedPassword);
         } catch (NoSuchAlgorithmException e) {
             System.out.println("There is an error securing password process");
-            log.append(e.getMessage());
+            myLog.append(e.getMessage());
             return "";
         }
     }
@@ -304,33 +232,39 @@ public class PromptingInput {
             random.nextBytes(mySalt);
         } catch (NoSuchAlgorithmException e) {
             System.out.println("There is an error generating mySalt process");
-            log.append(e.getMessage());
+            myLog.append(e.getMessage());
         }
     }
 
     /**
      * Write the specific inputs entered by the user to a file
      *
-     * @param firstName     The string first name retrieved from user's input
-     * @param lastName      The string last name retrieved from user's input
-     * @param firstInteger  The first integer retrieved value from user's input
-     * @param secondInteger The second integer retrieved value from user's input
-     * @param inputFile     The input file's name retrieved from user's input
-     * @param outputFile    The output file's name retrieved from user's input
+     * @param theFirstName     The string first name retrieved from
+     *                         user's input
+     * @param theLastName      The string last name retrieved from
+     *                         user's input
+     * @param theFirstInteger  The first integer retrieved value from
+     *                         user's input
+     * @param theSecondInteger The second integer retrieved value from
+     *                         user's input
+     * @param theInputFile     The input file's name retrieved from
+     *                         user's input
+     * @param theOutputFile    The output file's name retrieved from
+     *                         user's input
      */
-    private void writeOutputFile(String firstName, String lastName,
-                                 long firstInteger, long secondInteger,
-                                 String inputFile, String outputFile) {
-        try (FileOutputStream file = new FileOutputStream(outputFile);
+    void writeOutputFile(String theFirstName, String theLastName,
+                                 long theFirstInteger, long theSecondInteger,
+                                 String theInputFile, String theOutputFile) {
+        try (FileOutputStream file = new FileOutputStream(theOutputFile);
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(file))) {
             String result = //Formatting result for inputs
-                    "First name: " + firstName +
-                    "\nLast Name: " + lastName +
-                    "\nInteger a: " + firstInteger +
-                    "\nInteger b: " + secondInteger +
-                    "\na + b: " + (firstInteger + secondInteger) +
-                    "\na * b: " + (firstInteger * secondInteger) +
-                    "\n\nInput file's name: " + inputFile +
+                    "First name: " + theFirstName +
+                    "\nLast Name: " + theLastName +
+                    "\nInteger a: " + theFirstInteger +
+                    "\nInteger b: " + theSecondInteger +
+                    "\na + b: " + (theFirstInteger + theSecondInteger) +
+                    "\na * b: " + (theFirstInteger * theSecondInteger) +
+                    "\n\nInput file's name: " + theInputFile +
                     "\nContents in the file: ";
             writer.write(result);
             writer.newLine();
@@ -338,7 +272,7 @@ public class PromptingInput {
             //Copy contents form the input file to output file
             String line;
             BufferedReader reader = new BufferedReader(
-                    new FileReader(inputFile));
+                    new FileReader(theInputFile));
             while ((line = reader.readLine()) != null) {
                 writer.write(line);
                 writer.newLine();
@@ -347,7 +281,7 @@ public class PromptingInput {
         } catch (Exception e) {
             System.out.println(
                     "There is an error storing all input to file");
-            log.append(e.getMessage());
+            myLog.append(e.getMessage());
         }
     }
 
@@ -373,13 +307,13 @@ public class PromptingInput {
     /**
      * Writes out errors caught during program running process to a file
      *
-     * @param log The string builder contains error messages
+     * @param theLog The string builder contains error messages
      */
-    private void generateErrorLogFile(StringBuilder log) {
+    void generateErrorLogFile(StringBuilder theLog) {
         try (FileOutputStream file = new FileOutputStream("ErrorLogs.txt");
              BufferedWriter writer = new BufferedWriter(
                      new OutputStreamWriter(file))) {
-            writer.write(log.toString());
+            writer.write(theLog.toString());
         } catch (Exception e) {
             System.out.println("There is an error generating log file process");
         }
