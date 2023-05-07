@@ -64,8 +64,8 @@ public class PromptingInput {
      * @param theConfirmationPrompt The prompt description for password
      * @param theChoice             The integer choice represent specific prompt
      */
-     void promptUser(String theDisplayPrompt, String theReEntryPrompt,
-                            String theConfirmationPrompt, int theChoice) {
+    void promptUser(String theDisplayPrompt, String theReEntryPrompt,
+                    String theConfirmationPrompt, int theChoice) {
         String userInput;
         boolean result = false;
         boolean retries = false;
@@ -253,19 +253,19 @@ public class PromptingInput {
      *                         user's input
      */
     void writeOutputFile(String theFirstName, String theLastName,
-                                 long theFirstInteger, long theSecondInteger,
-                                 String theInputFile, String theOutputFile) {
+                         long theFirstInteger, long theSecondInteger,
+                         String theInputFile, String theOutputFile) {
         try (FileOutputStream file = new FileOutputStream(theOutputFile);
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(file))) {
             String result = //Formatting result for inputs
                     "First name: " + theFirstName +
-                    "\nLast Name: " + theLastName +
-                    "\nInteger a: " + theFirstInteger +
-                    "\nInteger b: " + theSecondInteger +
-                    "\na + b: " + (theFirstInteger + theSecondInteger) +
-                    "\na * b: " + (theFirstInteger * theSecondInteger) +
-                    "\n\nInput file's name: " + theInputFile +
-                    "\nContents in the file: ";
+                            "\nLast Name: " + theLastName +
+                            "\nInteger a: " + theFirstInteger +
+                            "\nInteger b: " + theSecondInteger +
+                            "\na + b: " + (theFirstInteger + theSecondInteger) +
+                            "\na * b: " + (theFirstInteger * theSecondInteger) +
+                            "\n\nInput file's name: " + theInputFile +
+                            "\nContents in the file: ";
             writer.write(result);
             writer.newLine();
 
@@ -293,14 +293,14 @@ public class PromptingInput {
     private String getPasswordStoringFileName() {
         promptUser(
                 "Please input your file's name to store your password" +
-                "(special characters allowed except _ and -, " +
-                "number and alphabetic characters allowed; " +
-                "Has to end with .txt): ",
+                        "(special characters allowed except _ and -, " +
+                        "number and alphabetic characters allowed; " +
+                        "Has to end with .txt): ",
                 "File's name is invalid, please re-enter, " +
-                "alphabetic characters, numbers " +
-                "and special characters allowed except _ and -" +
-                "\n(File name has to end with .txt)"
-                + "\nPlease try again.", "", 3);
+                        "alphabetic characters, numbers " +
+                        "and special characters allowed except _ and -" +
+                        "\n(File name has to end with .txt)"
+                        + "\nPlease try again.", "", 3);
         return myStoredFileName;
     }
 
