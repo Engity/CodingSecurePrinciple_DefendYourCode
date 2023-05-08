@@ -155,8 +155,12 @@ public class PromptingInput {
             //The file will contain encrypted salt code and encrypted password
             writer.write(Base64.getEncoder().encodeToString(mySalt)
                     + "\n" + theEncryptedPassword + "\n");
+            System.out.println("Password stored successfully!");
         } catch (Exception e) {
-            System.out.println("There is an error storing password process");
+            System.out.println(
+                    "There is an error storing password process" +
+                    "\nPlease refer to ErrorLogs.txt to see the error"
+            );
             myLog.append(e.getMessage());
         }
     }
@@ -188,7 +192,9 @@ public class PromptingInput {
 
         } catch (IOException e) {
             System.out.println(
-                    "There is an error validating password process");
+                    "There is an error validating password process" +
+                    "\nPlease refer to ErrorLogs.txt to see the error"
+            );
             fileFound = false; //File not found
             myLog.append(e.getMessage());
             return false;
@@ -216,7 +222,10 @@ public class PromptingInput {
                     thePassword.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hashedPassword);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("There is an error securing password process");
+            System.out.println(
+                    "There is an error securing password process" +
+                    "\nPlease refer to ErrorLogs.txt to see the error"
+            );
             myLog.append(e.getMessage());
             return "";
         }
@@ -232,7 +241,10 @@ public class PromptingInput {
             mySalt = new byte[10];
             random.nextBytes(mySalt);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("There is an error generating mySalt process");
+            System.out.println(
+                    "There is an error generating mySalt process" +
+                    "\nPlease refer to ErrorLogs.txt to see the error"
+            );
             myLog.append(e.getMessage());
         }
     }
@@ -281,7 +293,9 @@ public class PromptingInput {
             reader.close();
         } catch (Exception e) {
             System.out.println(
-                    "There is an error storing all input to file");
+                    "There is an error storing all input to file" +
+                    "\nPlease refer to ErrorLogs.txt to see the error"
+            );
             myLog.append(e.getMessage());
         }
     }
@@ -316,7 +330,10 @@ public class PromptingInput {
                      new OutputStreamWriter(file))) {
             writer.write(theLog.toString());
         } catch (Exception e) {
-            System.out.println("There is an error generating log file process");
+            System.out.println(
+                    "There is an error generating log file process" +
+                    "\nPlease refer to ErrorLogs.txt to see the error"
+            );
         }
     }
 }
