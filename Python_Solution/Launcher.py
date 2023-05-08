@@ -1,3 +1,4 @@
+#author Mey Vo, Toan Nguyen, Tinh Diep
 import Inputer
 import Verifier
 import os
