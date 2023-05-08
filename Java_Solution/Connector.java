@@ -2,6 +2,7 @@
  * This class is a connector that use and run
  * prompting input class with main
  *
+ * @author Mey Vo, Toan Nguyen, Tinh Diep
  * @version 5 May 2023
  */
 public class Connector {
