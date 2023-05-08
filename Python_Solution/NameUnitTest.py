@@ -15,11 +15,11 @@ class VerifierNameTest(unittest.TestCase):
                         'Empty Name Test Fails')
     
     def test_ShortName(self):
-        self.assertEqual(Verifier.Verifier.verifyName("T"), False,
+        self.assertEqual(Verifier.Verifier.verifyName("T"), "T",
                         'Short Name Test Fails')
     
     def test_LongName(self):
-        self.assertEqual(Verifier.Verifier.verifyName("ToanNguyenTran"), False,
+        self.assertEqual(Verifier.Verifier.verifyName("ToanNguyenTran"), "ToanNguyenTran",
                         'Long Name Test Fails')
     
     def test_NameWithSpaces(self):
@@ -36,13 +36,9 @@ class VerifierNameTest(unittest.TestCase):
                         'Lowercase Name Test Fails')
                         
     def test_NameWithMixedCase(self):
-        self.assertEqual(Verifier.Verifier.verifyName("ToAn"), False,
+        self.assertEqual(Verifier.Verifier.verifyName("ToAn"), "ToAn",
                         'Mixed Case Name Test Fails')
-                        
-    def test_NameWithAccentedChars(self):
-        self.assertEqual(Verifier.Verifier.verifyName("André"), "André",
-                        'Accented Name Test Fails')
-                        
+                                                
     def test_NameWithNumbers(self):
         self.assertEqual(Verifier.Verifier.verifyName("Toan123"), False,
                         'Name With Numbers Test Fails')

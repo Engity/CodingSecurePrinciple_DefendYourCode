@@ -23,8 +23,12 @@ class VerifierIntTest(unittest.TestCase):
                          'Valid int string with whitespace test fails')
 
     def test_InvalidInt_Positive(self):
-        self.assertEqual(Verifier.Verifier.verifyInt("+123"), False,
+        self.assertEqual(Verifier.Verifier.verifyInt("+123"), 123,
                          'Invalid positive int string test fails')
+        
+    def test_InvalidInt_Negative(self):
+        self.assertEqual(Verifier.Verifier.verifyInt("-123"), -123,
+                         'Invalid negative int string test fails')
 
     def test_InvalidInt_TooLarge(self):
         self.assertEqual(Verifier.Verifier.verifyInt(str(2**31)), False,

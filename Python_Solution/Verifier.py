@@ -4,7 +4,10 @@ class Verifier:
     @staticmethod
     def verifyInt(entry):
         try:
-            convertedInt = int(entry)
+            if (entry[0] == '+'):
+                convertedInt = int(entry[1:])
+            else:
+                convertedInt = int(entry)
             # Too big
             if convertedInt > 2147483647 or convertedInt < -2147483648:
                 return False
@@ -46,7 +49,7 @@ class Verifier:
         x = re.search(
             "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])"
             + "(?=.*[!@#$%^&()_+\-={}:;\"\|,.<>\/?])"
-            + "(^[A-Za-z0-9!@#$%^&()_+\-={}:;\"\|,.<>\/?]*.{8,30}$)"
+            + "(^[A-Za-z0-9!@#$%^&()_+\-={}:;\"\|,.<>\/? ]{8,30}$)"
             , entry
         )  # Regex to check file name, allow number and character and only file with txt extension
         if x == None:
@@ -78,3 +81,4 @@ class Verifier:
 # prompts for reads the name of an output file from the user
 # Same here
 # prompts the user to enter a password, store the password, then ask the user to re-enter the password and verify that it is correct
+
