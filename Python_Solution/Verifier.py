@@ -1,3 +1,4 @@
+#author Mey Vo, Toan Nguyen, Tinh Diep
 import re
 
 class Verifier:
