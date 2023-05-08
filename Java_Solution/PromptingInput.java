@@ -14,6 +14,7 @@ import java.util.Scanner;
  * password from user's input and also keep track a log file if
  * any error occurs
  *
+ * @author Mey Vo, Toan Nguyen, Tinh Diep
  * @version 5 May 2023
  */
 public class PromptingInput {

@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
  * This class centralizes the behavior for validating
  * input retrieved from user by using regex.
  *
- *
+ * @author Mey Vo, Toan Nguyen, Tinh Diep
  * @version 5 May 2023
  */
 public class Verifier {
