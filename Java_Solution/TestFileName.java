@@ -25,7 +25,7 @@ public class TestFileName {
 
     @Test
     public void testCheckFileNameWithInvalidCharacters2() {
-        assertTrue(verifier.checkFileName("example@file.txt"));
+        assertFalse(verifier.checkFileName("example@file.txt"));
     }
 
     @Test

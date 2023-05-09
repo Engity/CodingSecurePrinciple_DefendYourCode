@@ -14,7 +14,22 @@ public class TestName {
     public void testCheckValidName() {
         assertTrue(verifier.checkName("Mey"));
         assertTrue(verifier.checkName("Tommy"));
-        assertTrue(verifier.checkName("MeyVo"));
+        assertTrue(verifier.checkName("Toan"));
+    }
+
+    @Test
+    public void testCheckNameAtMaxLength() {
+        assertTrue(verifier.checkName("MeyVoMeyVoMeyVoMeyVoMeyVoMeyVoMeyVoMeyVoMeyVoMeyVo"));
+    }
+
+    @Test
+    public void testCheckNameLowerCase() {
+        assertTrue(verifier.checkName("yes"));
+    }
+
+    @Test
+    public void testCheckNameAllUpperCase() {
+        assertTrue(verifier.checkName("YES"));
     }
 
     @Test
@@ -29,11 +44,16 @@ public class TestName {
 
     @Test
     public void testCheckNameTooLong() {
-        assertTrue(verifier.checkName("TommyTinhDiepNguyen"));
+        assertFalse(verifier.checkName("TommyTinhDiepNguyenABMNIOPAMSJLKSMANSDJSQOOOOOOOOOO"));
     }
 
     @Test
     public void testCheckNameEmpty() {
         assertFalse(verifier.checkName(""));
+    }
+
+    @Test
+    public void testCheckNameWithWhiteSpace() {
+        assertFalse(verifier.checkName("Toan "));
     }
 }

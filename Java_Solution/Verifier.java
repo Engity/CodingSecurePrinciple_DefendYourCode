@@ -61,8 +61,9 @@ public class Verifier {
      */
     public boolean checkFileName(String theFileName) {
         myPattern = Pattern.compile(
-                "^[^~)('!*<>:;,?\"|/]+\\.txt$");
+                "(?!^temp\\.txt$)^([\\w\\-_.]+)\\.txt$");
         //Characters and numbers allowed
+        //Special characters allowed only for - and _
         //Ending must have .txt
         myMatcher = myPattern.matcher(theFileName);
         return myMatcher.find();

@@ -14,6 +14,15 @@ import static org.junit.Assert.*;
     public void testCheckValidPassword() {
         assertTrue(verifier.checkPassword("Mey1234567!"));
     }
+    @Test
+    public void testValidCheckPasswordExceedFormatRule() {
+        assertTrue(verifier.checkPassword("MonDa??Sy[]uSasb3$"));
+    }
+
+    @Test
+    public void testValid_PasswordMultiplePunctuationMarks() {
+        assertTrue(verifier.checkPassword("??!:}{[]*Ca2"));
+    }
 
     @Test
     public void testCheckPasswordTooShort() {
@@ -48,10 +57,5 @@ import static org.junit.Assert.*;
     @Test
     public void testCheckPasswordWithConsecutiveLowercase() {
         assertFalse(verifier.checkPassword("Paassw0rd!"));
-    }
-
-    @Test
-    public void testCheckPasswordWithForbiddenChars() {
-        assertFalse(verifier.checkPassword("Password@1"));
     }
 }
