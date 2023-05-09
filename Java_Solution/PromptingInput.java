@@ -5,9 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.Scanner;
 
 /**
@@ -165,7 +163,7 @@ public class PromptingInput {
                     "There is an error storing password process" +
                     "\nPlease refer to ErrorLogs.txt to see the error"
             );
-            logErrors(e);
+            logErrors(e); //Catch and store error
         }
     }
 
@@ -200,7 +198,7 @@ public class PromptingInput {
                     "\nPlease refer to ErrorLogs.txt to see the error"
             );
             myIsPasswordFileFound = false; //File not found
-            logErrors(e);
+            logErrors(e); //Catch and store error
             return false;
         }
         return false;
@@ -249,7 +247,7 @@ public class PromptingInput {
                     "There is an error generating mySalt process" +
                     "\nPlease refer to ErrorLogs.txt to see the error"
             );
-            logErrors(e);
+            logErrors(e); //Catch and store error
         }
     }
 
@@ -274,7 +272,8 @@ public class PromptingInput {
                          String theInputFile, String theOutputFile,
                          boolean theIsInputFileFound) {
         try (FileOutputStream file = new FileOutputStream(theOutputFile);
-             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(file))) {
+             BufferedWriter writer = new BufferedWriter(
+                     new OutputStreamWriter(file))) {
             String result = //Formatting result for inputs
                     "First name: " + theFirstName +
                             "\nLast Name: " + theLastName +
@@ -312,7 +311,7 @@ public class PromptingInput {
                     "There is an error storing all input to file" +
                     "\nPlease refer to ErrorLogs.txt to see the error"
             );
-            logErrors(e);
+            logErrors(e); //Catch and store error
         }
     }
 
@@ -324,7 +323,7 @@ public class PromptingInput {
     private String getPasswordStoringFileName() {
         promptUser(
                 "Please input your file's name to store your password" +
-                        "(special characters allowed except _ and -, " +
+                        " (special characters allowed except _ and -, " +
                         "number and alphabetic characters allowed; " +
                         "Has to end with .txt): ",
                 "File's name is invalid, please re-enter, " +
@@ -335,6 +334,11 @@ public class PromptingInput {
         return myStoredFileName;
     }
 
+    /**
+     * Formats, generates, and stores error report when an exception is caught
+     *
+     * @param theError The error type
+     */
     void logErrors(Exception theError) {
         myLog.append(LocalDateTime.now().
                 format(DateTimeFormatter.
@@ -343,6 +347,7 @@ public class PromptingInput {
                 .append("\n")
                 .append(theError.getMessage()).append("\n");
     }
+
     /**
      * Writes out errors caught during program running process to a file
      *

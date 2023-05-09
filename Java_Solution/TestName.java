@@ -1,6 +1,12 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * This class centralizes in testing name input validation
+ *
+ * @author Mey Vo, Toan Nguyen, Tinh Diep
+ * @version 5 May 2023
+ */
 public class TestName {
     Verifier verifier = new Verifier();
 
