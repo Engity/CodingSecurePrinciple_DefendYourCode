@@ -112,6 +112,7 @@ class Inputer:
         confirmationPrompt="",
     ):
         res = None
+        pwSaved = False
         while True:
             # Try to read the input
             try:
@@ -130,8 +131,10 @@ class Inputer:
                         try:
                             # Store the password
                             [pw, saltPW] = Inputer.hashPassword(inputString)
-                            if Inputer.storePassword(pw, saltPW):
-                                print("Successfully saving password.")
+                            if (Inputer.storePassword(pw, saltPW)):
+                                if (not pwSaved):
+                                    print("Successfully saving password.")
+                                    pwSaved = True
                             else:
                                 print("Error while trying to save password.")  
                                 return False
