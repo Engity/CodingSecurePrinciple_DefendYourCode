@@ -98,18 +98,6 @@ userNumber2 = Inputer.Inputer.promptUser(
     Verifier.Verifier.verifyInt,
 )
 
-userPassword = Inputer.Inputer.promptUser(
-    "\nPlease input a password. "
-    + "Password has to be at least 8 to 30 in length."
-    + "\nIt must contain at least a number, Capital letter, non-capital letter."
-    + '\nIt must contain at least one of these special characters, !@#$%^&()_+\-={}:;"\|,.<>\/?\n'
-    + "\nPlease input your password: ",
-    "\nIncorrect format. Please try again: ",
-    Verifier.Verifier.verifyPassword,
-    True,
-    "Please confirm your password: ",
-)
-
 inputFile = Inputer.Inputer.promptUser(
     "\nPlease enter name of the input file name, it cannot not contain special character except _ and -; allow number and alphabetic characters and has to end with .txt\n"
     + "File name cannot be 'temp.txt'\n",
@@ -126,6 +114,18 @@ while(True):
     )
     if (inputFile != outputFile):
         break
+
+userPassword = Inputer.Inputer.promptUser(
+    "\nPlease input a password. "
+    + "Password has to be at least 8 to 30 in length."
+    + "\nIt must contain at least a number, Capital letter, non-capital letter."
+    + '\nIt must contain at least one of these special characters, !@#$%^&()_+\-={}:;"\|,.<>\/?\n'
+    + "\nPlease input your password: ",
+    "\nIncorrect format. Please try again: ",
+    Verifier.Verifier.verifyPassword,
+    True,
+    "Please confirm your password: ",
+)
 
 inputContent = readInput(inputFile)
 writeResult(userFirstName, userLastName, userNumber1, userNumber2, inputContent, outputFile)
