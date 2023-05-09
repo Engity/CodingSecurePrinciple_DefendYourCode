@@ -116,18 +116,36 @@ public class PromptingInput {
                 case 4 -> {
                     //Validates password
                     //If valid, encrypt the password and store to a file
+                    //Retrieve salt code and hash code
                     //Validate the password again with encrypted password
                     //Keep prompting if the re-entry password did not match
                     //If file not found, exist the loop
                     result = VERIFIER.checkPassword(userInput);
                     if (result) {
                         String fileName = getPasswordStoringFileName();
-                        String typedPassword = securePassword(userInput);
-                        storePassword(typedPassword, fileName);
+                        String hashedPassword = securePassword(userInput);
+                        storePassword(hashedPassword, fileName);
+                        String theSalt = "";
+                        String theHash  = "";
+
+                        try (BufferedReader reader = new BufferedReader(new FileReader(
+                                fileName))) {
+                            theSalt = reader.readLine(); //The encrypted salt code
+                            theHash = reader.readLine(); //The encrypted password hash code
+                        } catch (IOException e) {
+                            System.out.println(
+                                    "There is an error retrieving password process" +
+                                    "\nPlease refer to ErrorLogs.txt to see the error"
+                            );
+                            myIsPasswordFileFound = false; //File not found
+                            logErrors(e); //Catch and store error
+
+                        }
                         while (myIsPasswordFileFound) {
                             System.out.println(theConfirmationPrompt);
                             String reTypedPassword = myInput.nextLine();
-                            if (validatePassword(reTypedPassword, fileName)) {
+                            if (validatePassword(reTypedPassword,theSalt , theHash)) {
+                                System.out.println("Matched!!");
                                 break;
                             } else if (myIsPasswordFileFound) {
                                 //Display only in the case file is found
@@ -172,34 +190,16 @@ public class PromptingInput {
      * the encrypted password stored in a file
      *
      * @param thePassword The string password entered by the user
-     * @param theFileName The string file's name entered by the user
+     * @param theSalt The salt code for the password
+     * @param theHash The hash code of the password
      * @return The boolean true or false if it matched
      */
-    private boolean validatePassword(String thePassword, String theFileName) {
-        String readSalt;
-        String readHash;
-        try (BufferedReader reader = new BufferedReader(new FileReader(
-                theFileName))) {
-            readSalt = reader.readLine(); //The encrypted salt code
-            readHash = reader.readLine(); //The encrypted password hash code
-
-            //Encrypt the password to compare
-            // with the previous password (encrypted)
-            if (readSalt != null && readHash != null) {
-                String hashedPassword = securePassword(thePassword);
-                return readSalt.equals(Base64.getEncoder()
-                        .encodeToString(mySalt))
-                        && hashedPassword.equals(readHash);
-            }
-
-        } catch (IOException e) {
-            System.out.println(
-                    "There is an error validating password process" +
-                    "\nPlease refer to ErrorLogs.txt to see the error"
-            );
-            myIsPasswordFileFound = false; //File not found
-            logErrors(e); //Catch and store error
-            return false;
+    private boolean validatePassword(String thePassword, String theSalt, String theHash) {
+        if (theSalt != null && theHash != null) {
+            String hashedPassword = securePassword(thePassword);
+            return theSalt.equals(Base64.getEncoder()
+                    .encodeToString(mySalt))
+                    && hashedPassword.equals(theHash);
         }
         return false;
     }
