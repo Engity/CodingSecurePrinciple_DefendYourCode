@@ -70,16 +70,16 @@ public class Connector {
                 "Password has to be at least 8 to 30 in length." +
                         "\nIt must contain at least a number, a capital letter," +
                         " and a non-capital letter." +
-                        "\nIt must contain at least one of these punctuation marks" +
+                        "\nIt must contain at least one of these special marks" +
                         "\n!@#$%^&()_+\\-={}:;\"|,.<>/?" +
-                        "\nNo three consecutive lower-case characters" +
+                        "\nNo more than three consecutive lower-case characters" +
                         "\nPlease input your password:\s",
                 "Password has to be at least 8 to 30 in length." +
                         "\nIt must contain at least a number, a capital letter," +
                         " and a non-capital letter." +
-                        "\nIt must contain at least one of these punctuation marks" +
+                        "\nIt must contain at least one of these special marks" +
                         "\n!@#$%^&()_+\\-={}:;\"|,.<>/?" +
-                        "\nNo three consecutive lower-case characters" +
+                        "\nNo more than three consecutive lower-case characters" +
                         "\nPlease input your password:\s",
                 "Please re-enter your password for confirmation: ", 4);
         inputPrompter.writeOutputFile(firstName, lastName, firstInteger,
