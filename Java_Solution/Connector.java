@@ -81,7 +81,7 @@ public class Connector {
                         "\nPlease input your password:\s",
                 "Please re-enter your password for confirmation: ", 4);
         inputPrompter.writeOutputFile(firstName, lastName, firstInteger,
-                secondInteger, inputFile, outputFile);
+                secondInteger, inputFile, outputFile, true);
         inputPrompter.generateErrorLogFile(inputPrompter.myLog);
     }
 }

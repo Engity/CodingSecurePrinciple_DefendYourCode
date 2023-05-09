@@ -1,7 +1,12 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class TestPassword {
+/**
+ * This class centralizes in testing password input validation
+ *
+ * @author Mey Vo, Toan Nguyen, Tinh Diep
+ * @version 5 May 2023
+ */public class TestPassword {
 
     Verifier verifier = new Verifier();
 
