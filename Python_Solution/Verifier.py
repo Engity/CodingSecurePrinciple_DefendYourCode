@@ -35,7 +35,7 @@ class Verifier:
         # File Name Condition does not contain special character except _ and -, allow to have number and alphabetic characters; Has to end with .txt
         # File name cannot also be temp.txt
         x = re.search(
-            "^[^~)(''!*<>:;,?\"|/]+\.txt$", entry
+            "(?!^temp\.txt$)^([\w\-_]+)\.txt$", entry
         )  # Regex to check file name, allow number and character and only file with txt extension
         if x == None:
             return False
