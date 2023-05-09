@@ -131,10 +131,13 @@ class Inputer:
                         try:
                             # Store the password
                             [pw, saltPW] = Inputer.hashPassword(inputString)
+                            
                             if (Inputer.storePassword(pw, saltPW)):
                                 if (not pwSaved):
                                     print("Successfully saving password.")
                                     pwSaved = True
+                                    #Try retrieving the password
+                                    [recHashedPW, recSalt] = Inputer.retrievePassword()
                             else:
                                 print("Error while trying to save password.")  
                                 return False
@@ -146,10 +149,9 @@ class Inputer:
                             # Error reading the input
                             print("Error while trying to read the input")
                             return False
-                        #Try retrieving the password
-                        [hashedPW, salt] = Inputer.retrievePassword()
-                        if (salt and hashedPW):
-                            if Inputer.checkPassword(salt, hashedPW, confirmationInput):
+                        
+                        if (recSalt and recHashedPW):
+                            if Inputer.checkPassword(recSalt, recHashedPW, confirmationInput):
                                 print(
                                     "\nPassword Confirmed."
                                 )
