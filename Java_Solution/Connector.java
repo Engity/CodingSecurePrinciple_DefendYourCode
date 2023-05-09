@@ -44,23 +44,25 @@ public class Connector {
         long secondInteger = inputPrompter.myStoredInteger;
         inputPrompter.promptUser(
                 "Please input your input file's name " +
-                        "(special characters allowed except _ and -, " +
+                        "(special characters are not allowed except _ and -, " +
                         "number and alphabetic characters allowed; " +
                         "Has to end with .txt): ",
                 "Input file's name is invalid, please re-enter, " +
                         "alphabetic characters, numbers " +
-                        "and special characters allowed except _ and -" +
+                        "and special characters are not allowed " +
+                        "except _ and -" +
                         "\n(File name has to end with .txt)"
                         + "\nPlease try again.", "", 3);
         String inputFile = inputPrompter.myStoredFileName;
         inputPrompter.promptUser(
                 "Please input your output file's name " +
-                        "(special characters allowed except _ and -, " +
+                        "(special characters are not allowed except _ and -, " +
                         "number and alphabetic characters allowed; " +
                         "Has to end with .txt): ",
                 "Output file's name is invalid, please re-enter, " +
                         "alphabetic characters, numbers " +
-                        "and special characters allowed except _ and -" +
+                        "and special characters are not allowed " +
+                        "except _ and -" +
                         "\n(File name has to end with .txt)"
                         + "\nPlease try again:", "", 3);
         String outputFile = inputPrompter.myStoredFileName;
